@@ -9,12 +9,16 @@ import Foundation
 import Combine
 
 final class ToDoListRouter {
-    func navigateToDetail() {
+    func navigateToNewTask() {
         let dataController = AddTaskDataController()
         let router = AddTaskRouter()
         let viewModel = AddTaskViewModel(dataController: dataController, router: router)
         let view = AddTaskVC(viewModel: viewModel)
         
         RoutingManager.shared.push(view)
+    }
+    
+    func navigateToDetail(with task: String) {
+        
     }
 }
