@@ -13,28 +13,23 @@ final class AddTaskVC:UIViewController{
     private let viewModel: AddTaskViewModel
     private var cancellables = Set<AnyCancellable>()
     
-    private let note: UITextField = {
-        let note = UITextField()
-        note.placeholder = "Note To Myself"
+    private let note: UITextView = {
+        let note = UITextView()
         note.textColor = .black
-        note.backgroundColor = .clear
+        note.backgroundColor = .white
+        note.textAlignment = .left
         note.translatesAutoresizingMaskIntoConstraints = false
-      return note
+        return note
     }()
     
-    private let saveButton: UIButton = {
-       let saveButton = UIButton()
-        saveButton.setImage(UIImage(systemName: "tick"), for: .normal)
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
-        return saveButton
-    }()
+
+    @objc func saveAction(_ gestureRecognizer: UITapGestureRecognizer) {
+        print("save")
+        }
     
-    private let cancelButton: UIButton = {
-       let cancelButton = UIButton()
-        cancelButton.setImage(UIImage(systemName: "xmark"), for: .normal)
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        return cancelButton
-    }()
+    @objc func cancelAction(_ gestureRecognizer: UITapGestureRecognizer) {
+        print("cancel")
+        }
     
     init(viewModel: AddTaskViewModel) {
         self.viewModel = viewModel
@@ -45,24 +40,41 @@ final class AddTaskVC:UIViewController{
         fatalError("init(coder:) has not been implemented")
     }
 }
+// MARK: - LifeCycle
+extension AddTaskVC {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+    }
+}
 // MARK: - SetupUI
 extension AddTaskVC {
     private func setupUI(){
+        title = "My Note"
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(image: UIImage(systemName: "doc.text"),
+                         style: .done,
+                         target: self,
+                         action: #selector(saveAction(_:))),
+         UIBarButtonItem(image: UIImage(systemName: "xmark"),
+                        style: .done,
+                        target: self,
+                        action: #selector(cancelAction(_:)))
+        ]
+        
+        navigationController?.navigationBar.tintColor = .black
         view.addSubview(note)
-        view.addSubview(saveButton)
-        view.addSubview(cancelButton)
         
-        note.topAnchor.constraint(equalTo: view.topAnchor, constant: 12).isActive = true
-        note.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
-        note .trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8).isActive = true
+        note.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        note.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        note .trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        note.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: 0).isActive = true
         
-        cancelButton.topAnchor.constraint(equalTo: note.bottomAnchor, constant: 12).isActive = true
-        cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        
-        saveButton.topAnchor.constraint(equalTo: note.bottomAnchor, constant: 12).isActive = true
-        saveButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 12).isActive = true
-        saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        cancelButton.widthAnchor.constraint(equalTo: saveButton.widthAnchor).isActive = true
-        
+    }
+}
+// MARK: - Listeners
+extension ToDoListVC {
+   private func addListeners(){
+       
     }
 }

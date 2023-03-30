@@ -14,35 +14,10 @@ final class ToDoListVC: UIViewController{
     private var cancellables = Set<AnyCancellable>()
     
     
-    private let toDoLabel: UILabel = {
-       let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .white
-        label.contentMode = .center
-        label.textAlignment = .center
-        label.textColor = .black
-        label.text = "To Do List"
-        return label
-    }()
-    
-    private let addTaskView: UIView = {
-        let  view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private let addTaskImage: UIImageView = {
-        let addTaskImage = UIImageView()
-        addTaskImage.image = UIImage(systemName: "plus")
-        addTaskImage.contentMode = .scaleAspectFit
-        addTaskImage.translatesAutoresizingMaskIntoConstraints = false
-        return addTaskImage
-    }()
-    
     private let tableViewToDo: UITableView = {
         let table = UITableView(frame: .zero)
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.backgroundColor = .blue
+        table.backgroundColor = .white
         return table
     }()
     
@@ -64,7 +39,6 @@ final class ToDoListVC: UIViewController{
 extension ToDoListVC {
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
         setUpUI()
         addListeners()
         viewModel.initialize()
@@ -74,27 +48,14 @@ extension ToDoListVC {
 // MARK: - SetupUI
 extension ToDoListVC{
     private  func setUpUI(){
+        title = "To Do List"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .done, target: self, action: #selector(addTaskAction(_:)))
+        navigationController?.navigationBar.tintColor = .black
+        
         tableViewToDo.register(ToDoListViewCell.self, forCellReuseIdentifier: "Cell")
         tableViewToDo.delegate = self
         tableViewToDo.dataSource = self
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(addTaskAction(_:)))
-        addTaskView.addGestureRecognizer(tapGesture)
-//        view.addSubview(toDoLabel)
         view.addSubview(tableViewToDo)
-//        view.addSubview(addTaskView)
-        addTaskView.addSubview(addTaskImage)
-        
-//        toDoLabel.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-//        toDoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-//        toDoLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
-//
-//        addTaskView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-//        addTaskView.leadingAnchor.constraint(equalTo: toDoLabel.trailingAnchor,constant: 0).isActive = true
-//        addTaskView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-//        addTaskView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-//        addTaskView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-//        addTaskView.bottomAnchor.constraint(equalTo: tableViewToDo.topAnchor, constant: 0).isActive = true
-//
         
         tableViewToDo.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         tableViewToDo.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
@@ -120,7 +81,7 @@ final class ToDoListViewCell: UITableViewCell{
         label.contentMode = .left
         label.textAlignment = .left
         label.numberOfLines = 3
-        label.textColor = .red
+        label.textColor = .darkGray
         return label
     }()
     
@@ -133,7 +94,6 @@ final class ToDoListViewCell: UITableViewCell{
     }
      func updateCell(_ presentation:ToDoTaskPresentation){
         viewCellLabel.text = presentation.task
-     //    viewCellLabel.text = "irem"
     }
 }
 // MARK: - TableView
