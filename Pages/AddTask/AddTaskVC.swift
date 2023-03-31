@@ -9,8 +9,9 @@ import Foundation
 import UIKit
 import Combine
 
-final class AddTaskVC:UIViewController{
+final class AddTaskVC : UIViewController, UITextViewDelegate{
     private let viewModel: AddTaskViewModel
+    var taskItem: TaskListItem?
     private var cancellables = Set<AnyCancellable>()
     
     private let note: UITextView = {
@@ -22,13 +23,16 @@ final class AddTaskVC:UIViewController{
         return note
     }()
     
-
     @objc func saveAction(_ gestureRecognizer: UITapGestureRecognizer) {
-        print("save")
+        guard
+                let description = note.text else {
+            return
+        }
+        viewModel.newTaskItem()
         }
     
     @objc func cancelAction(_ gestureRecognizer: UITapGestureRecognizer) {
-        print("cancel")
+        viewModel.cancelNewTask()
         }
     
     init(viewModel: AddTaskViewModel) {

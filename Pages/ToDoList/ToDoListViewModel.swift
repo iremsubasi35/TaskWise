@@ -9,14 +9,16 @@ import Foundation
 import Combine
 
 struct ToDoTaskPresentation {
+    let id: String
     let task: String
+   
 }
 struct ToDoTaskListPresentation {
     let tasks: [ToDoTaskPresentation]
     
-    init(aims: [TaskListMemories]) {
+    init(aims: [TaskListItem]) {
         self.tasks = aims
-            .compactMap { .init(task: $0.aim) }
+            .compactMap { .init( id: $0.id ,task: $0.description) }
     }
 }
 

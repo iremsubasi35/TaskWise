@@ -148,3 +148,12 @@ extension ToDoListVC {
             .store(in: &cancellables)
     }
 }
+
+// MARK: - UpdateUI
+extension ToDoListVC {
+    private func updateUI(with taskPresentation: ToDoTaskListPresentation?) {
+        guard let taskPresentation = taskPresentation else {
+            return
+        }
+    }
+    }
