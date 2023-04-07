@@ -20,6 +20,11 @@ final class TaskDetailVC: UIViewController {
         tasklbl.textAlignment = .center
         return tasklbl
     }()
+    
+    @objc func editTaskAction(_ gestureRecognizer: UITapGestureRecognizer) {
+    //    viewModel.readTask() edit gelecek buraya
+        }
+    
     init(viewModel: TaskDetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -34,6 +39,8 @@ extension TaskDetailVC{
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        addListeners()
+        viewModel.readTask()
     }
 }
 
@@ -41,6 +48,8 @@ extension TaskDetailVC{
 extension TaskDetailVC{
     private func setupUI(){
         view.backgroundColor = .white
+        title = "Note"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .done, target: self, action: #selector(editTaskAction(_:)))
         view.addSubview(taskDescription)
         
         taskDescription.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
@@ -49,3 +58,21 @@ extension TaskDetailVC{
         taskDescription.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: 0).isActive = true
     }
 }
+
+// MARK: - Listeners
+extension TaskDetailVC {
+    private func addListeners(){
+        viewModel
+            .taskDetailListPresentation
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] presentation in
+                guard let self = self else {
+                    return
+                }
+                self.taskDescription.text = presentation?.task
+            }
+            .store(in: &cancellables)
+    }
+}
+
+

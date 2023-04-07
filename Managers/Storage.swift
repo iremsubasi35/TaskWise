@@ -12,7 +12,7 @@ import UIKit
 
 final class Storage{
     
-    func createNewTask(description: String) {
+    func createNewTask(note:TaskListItem ) {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         let filePath = documentsDirectory.appendingPathComponent("TaskList").appendingPathExtension("json")
@@ -22,11 +22,17 @@ final class Storage{
 
         var currentTasks = readTasks()
         let id = UUID().uuidString
-        let newTask = TaskListItem(id: id, description: description)
+        let newTask = TaskListItem(id: id, description: note.description)
         currentTasks.append(newTask)
 
         guard let jsonData = try? JSONEncoder().encode(currentTasks)
         else { return }
+        do {
+            try jsonData.write(to: filePath)
+
+        } catch let error {
+            NSLog("Hata : \(error)")
+        }
     }
     
     func readTasks() -> [TaskListItem] {
@@ -90,6 +96,12 @@ final class Storage{
         let filePath = documentsDirectory.appendingPathComponent("TaskList").appendingPathExtension("json")
         if !FileManager.default.fileExists(atPath: filePath.path) {
             FileManager.default.createFile(atPath: filePath.path, contents: nil, attributes: nil)
+        }
+        do {
+            try jsonData.write(to: filePath)
+
+        } catch let error {
+            NSLog("Hata : \(error)")
         }
     }
 }

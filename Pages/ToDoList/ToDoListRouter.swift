@@ -18,8 +18,8 @@ final class ToDoListRouter {
         RoutingManager.shared.push(view)
     }
     
-    func navigateToDetail(with task: String) {
-        let dataController = TaskDetailDataController()
+    func navigateToDetail(with taskId: String) {
+        let dataController = TaskDetailDataController(taskId: taskId)
         let router = TaskDetailRouter()
         let viewModel = TaskDetailViewModel(dataController: dataController, router: router)
         let view = TaskDetailVC(viewModel: viewModel)

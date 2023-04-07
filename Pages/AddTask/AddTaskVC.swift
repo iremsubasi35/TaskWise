@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Combine
 
-final class AddTaskVC : UIViewController, UITextViewDelegate{
+final class AddTaskVC : UIViewController{
     private let viewModel: AddTaskViewModel
     var taskItem: TaskListItem?
     private var cancellables = Set<AnyCancellable>()
